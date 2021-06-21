@@ -27,9 +27,9 @@ String baseurl="https://api.pexels.com/videos";
 
       backgroundColor: Colors.black54,
       body: RefreshIndicator(
-        onRefresh: () => _bloc.fetchMovieList(),
+        onRefresh: () => _bloc.fetchVideoList(),
         child: StreamBuilder<ApiResponse<videoData>>(
-          stream: _bloc.movieListStream,
+          stream: _bloc.VideoListStream,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               switch (snapshot.data.status) {
@@ -42,7 +42,7 @@ String baseurl="https://api.pexels.com/videos";
                 case Status.ERROR:
                   return Error(
                     errorMessage: snapshot.data.message,
-                    onRetryPressed: () => _bloc.fetchMovieList(),
+                    onRetryPressed: () => _bloc.fetchVideoList(),
                   );
                   break;
               }
@@ -80,11 +80,7 @@ class MovieList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NotificationListener<ScrollNotification>(
-      onNotification: (ScrollNotification scrollDetails){
-        if(movieList.videos.length==movieList.perPage){
-          lodmoreImage();
-        }
-      },
+
       child: ListView.builder(
         itemCount: movieList.videos.length,
 

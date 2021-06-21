@@ -121,6 +121,6 @@ dynamic _returnResponse(http.Response response) {
     case 500:
     default:
       throw FetchDataException(
-          'Error occured while Communication with Server with StatusCode : ${response.statusCode}');
+          'Error occurred while Communication with Server with StatusCode : ${response.statusCode}');
   }
 }

@@ -24,9 +24,9 @@ class _ImageListState extends State<ImageList> {
 
       backgroundColor: Colors.black54,
       body: RefreshIndicator(
-        onRefresh: () => _bloc.fetchMovieList(),
+        onRefresh: () => _bloc.fetchImageList(),
         child: StreamBuilder<ApiResponse<ImageData>>(
-          stream: _bloc.movieListStream,
+          stream: _bloc.ImageListStream,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               switch (snapshot.data.status) {
@@ -39,7 +39,7 @@ class _ImageListState extends State<ImageList> {
                 case Status.ERROR:
                   return Error(
                     errorMessage: snapshot.data.message,
-                    onRetryPressed: () => _bloc.fetchMovieList(),
+                    onRetryPressed: () => _bloc.fetchImageList(),
                   );
                   break;
               }
@@ -77,11 +77,6 @@ class MovieList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NotificationListener<ScrollNotification>(
-      onNotification: (ScrollNotification scrollDetails){
-        if(movieList.photos.length==movieList.perPage){
-          lodmoreImage();
-        }
-      },
       child: ListView.builder(
         itemCount: movieList.photos.length,
 
@@ -95,9 +90,13 @@ class MovieList extends StatelessWidget {
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>OurImageView(photo:movieList.photos[index])));
                   },
-                  child:  Image.network(
-                    '${movieList.photos[index].src.landscape}',
-                    fit: BoxFit.fill,
+                  child:  Stack(
+                    children: [
+                      Image.network(
+                        '${movieList.photos[index].src.landscape}',
+                        fit: BoxFit.fill,
+                      ),
+                    ],
                   ),),
                 Text(getImageName("${movieList.photos[index].url}"),style: TextStyle(fontSize: 15,),),
                 Text("${movieList.photos[index].photographer}",style: TextStyle(fontSize: 13,),),

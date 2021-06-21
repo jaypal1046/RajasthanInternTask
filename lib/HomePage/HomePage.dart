@@ -13,14 +13,16 @@ class _OurHomePageState extends State<OurHomePage> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+
         appBar: AppBar(
+          title: Text("Home"),
           actions: [
             GestureDetector(
               onTap: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context)=>Ourfavorite()));
               },
 
-              child: Icon(Icons.favorite,color: Colors.redAccent,size: 40,semanticLabel: "favorite",),
+              child: Icon(Icons.favorite,color: Colors.redAccent,size: 35,semanticLabel: "favorite",),
             ),
             SizedBox(width: 15,)
           ],

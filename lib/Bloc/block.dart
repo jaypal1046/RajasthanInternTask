@@ -5,38 +5,38 @@ import 'package:pexel/ImageReposetry.dart';
 import 'package:pexel/Imagerespond.dart';
 
 class ImageBlockBloc {
-  ImageRepository _movieRepository;
-  StreamController _movieListController;
+  ImageRepository _ImageRepository;
+  StreamController _ImageListController;
 String baseurl;
-  StreamSink<ApiResponse<ImageData>> get movieListSink =>
-      _movieListController.sink;
+  StreamSink<ApiResponse<ImageData>> get ImageListSink =>
+      _ImageListController.sink;
 
-  Stream<ApiResponse<ImageData>> get movieListStream {
-    print(_movieListController.stream);
-    return _movieListController.stream;
+  Stream<ApiResponse<ImageData>> get ImageListStream {
+    print(_ImageListController.stream);
+    return _ImageListController.stream;
   }
 
 
   ImageBlockBloc({this.baseurl}) {
 
-    _movieListController = StreamController<ApiResponse<ImageData>>();
-    _movieRepository = ImageRepository(url: baseurl);
+    _ImageListController = StreamController<ApiResponse<ImageData>>();
+    _ImageRepository = ImageRepository(url: baseurl);
 
-    fetchMovieList();
+    fetchImageList();
   }
 
-  fetchMovieList() async {
-    movieListSink.add(ApiResponse.loading('Fetching Popular Image'));
+  fetchImageList() async {
+    ImageListSink.add(ApiResponse.loading('Fetching Pexels Image'));
     try {
-      ImageData movies = await _movieRepository.fetchMovieList();
-      movieListSink.add(ApiResponse.completed(movies));
+      ImageData movies = await _ImageRepository.fetchMovieList();
+      ImageListSink.add(ApiResponse.completed(movies));
     } catch (e) {
-      movieListSink.add(ApiResponse.error(e.toString()));
+      ImageListSink.add(ApiResponse.error(e.toString()));
       print(e);
     }
   }
 
   dispose() {
-    _movieListController?.close();
+    _ImageListController?.close();
   }
 }

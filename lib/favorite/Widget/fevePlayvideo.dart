@@ -1,31 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:pexel/Database/database.dart';
 import 'package:pexel/Videoresp.dart';
-import 'package:pexel/favorite/favarite.dart';
 import 'package:video_player/video_player.dart';
-class PlayVideoByLink extends StatefulWidget {
-  String video;
- Videos data;
-  PlayVideoByLink ( {this.video,this.data,});
+
+class fevaritePlayVideoByLink extends StatefulWidget {
+  Map<String, dynamic> data;
+  fevaritePlayVideoByLink (  {this.data } );
   @override
   _OurVideoState createState() => _OurVideoState();
 }
-
-class _OurVideoState extends State<PlayVideoByLink> {
+class _OurVideoState extends State<fevaritePlayVideoByLink> {
 
   VideoPlayerController _controller;
   Future<void> _initializeVideoPlayerFuture;
 
-bool like;
+  bool like=false;
 
   List fileData=[];
   @override
   void initState() {
+    var docList = widget.data["videoFiles"];
+   
     setState(() {
       like=false;
     });
     _controller = VideoPlayerController.network(
-       widget.video
+        docList[0]["link"]
     );
     _initializeVideoPlayerFuture = _controller.initialize();
     _controller.setLooping(true);
@@ -52,9 +51,11 @@ bool like;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:Column(
-        children: [
-          GestureDetector(
+      backgroundColor: Colors.black12,
+      body:Align(
+        alignment: Alignment.center,
+        child: Center(
+          child: GestureDetector(
             onTap:  () {
               setState(() {
                 if (_controller.value.isPlaying) {
@@ -80,59 +81,7 @@ bool like;
               },
             ),
           ),
-
-          Row(children: [
-            SizedBox(width: 20,),
-            GestureDetector(
-              onTap: (){
-                Videos videodata=Videos();
-                 setState(() {
-                   if(like==true){
-                   like=false;
-                  }else{
-
-                 videodata.url=  widget.data.url;
-                 videodata.width= widget.data.width;
-                 videodata.height= widget.data.height;
-                 videodata.duration= widget.data.duration;
-                 videodata.image= widget.data.image;
-                 videodata.id= widget.data.id;
-                 videodata.videoFiles=  widget.data.videoFiles;
-                 videodata.videoPictures=  widget.data.videoPictures;
-                 videodata.user= widget.data.user;
-                 print( videodata.videoFiles[1].link);
-                 print( videodata.videoPictures);
-                 print( videodata.user);
-                OurDatabase().createVider(videodata).then((value) {
-               like=true;
-               });
-                   }
-
-                 }
-
-                   );
-              
-
-               // Navigator.push(context, MaterialPageRoute(builder: (context)=>Ourfavorite()));
-              },
-
-              child:  like==false ? likes() : unlike(),
-            ),
-            SizedBox(width: 20,),
-            Text(" Title: ${getImageName("${widget.data.url}")}",style: TextStyle(fontSize: 15,),),
-          ],),
-          Text(" Duration:${widget.data.duration} seconds",style: TextStyle(fontSize: 15,),),
-       Row(children: [
-         SizedBox(width: 20,),
-         Text("Resulation:${widget.data.videoFiles[1].height}x${widget.data.videoFiles[1].width}",style: TextStyle(fontSize: 15,),),
-         SizedBox(width: 10,),
-         Text(" quality:${widget.data.videoFiles[1].quality}",style: TextStyle(fontSize: 15,),),
-       ],),
-          Text("Creator:${widget.data.user.name}",style: TextStyle(fontSize: 15,),),
-
-
-
-        ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

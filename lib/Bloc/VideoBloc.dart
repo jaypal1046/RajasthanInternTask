@@ -7,38 +7,38 @@ import 'package:pexel/Videorepo.dart';
 import 'package:pexel/Videoresp.dart';
 
 class VideoBlockBloc {
-  VideoRepository _movieRepository;
-  StreamController _movieListController;
+  VideoRepository _VideoRepository;
+  StreamController _VideoListController;
   String baseurl;
-  StreamSink<ApiResponse<videoData>> get movieListSink =>
-      _movieListController.sink;
+  StreamSink<ApiResponse<videoData>> get VideoListSink =>
+      _VideoListController.sink;
 
-  Stream<ApiResponse<videoData>> get movieListStream {
-    print(_movieListController.stream);
-    return _movieListController.stream;
+  Stream<ApiResponse<videoData>> get VideoListStream {
+    print(_VideoListController.stream);
+    return _VideoListController.stream;
   }
 
 
   VideoBlockBloc({this.baseurl}) {
 
-    _movieListController = StreamController<ApiResponse<videoData>>();
-    _movieRepository = VideoRepository(url: baseurl);
+    _VideoListController = StreamController<ApiResponse<videoData>>();
+    _VideoRepository = VideoRepository(url: baseurl);
 
-    fetchMovieList();
+    fetchVideoList();
   }
 
-  fetchMovieList() async {
-    movieListSink.add(ApiResponse.loading('Fetching Popular Image'));
+  fetchVideoList() async {
+    VideoListSink.add(ApiResponse.loading('Fetching Pexels Video'));
     try {
-      videoData movies = await _movieRepository.fetchMovieList();
-      movieListSink.add(ApiResponse.completed(movies));
+      videoData movies = await _VideoRepository.fetchMovieList();
+      VideoListSink.add(ApiResponse.completed(movies));
     } catch (e) {
-      movieListSink.add(ApiResponse.error(e.toString()));
+      VideoListSink.add(ApiResponse.error(e.toString()));
       print(e);
     }
   }
 
   dispose() {
-    _movieListController?.close();
+    _VideoListController?.close();
   }
 }
